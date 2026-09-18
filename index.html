@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#06111f" />
+  <meta name="description"
+        content="EcoDash — African Digital Logistics & Infrastructure Simulator. A solar-powered delivery drone simulation built with HTML5 Canvas, CSS3 and vanilla JavaScript (ES6+)." />
+  <title>EcoDash | African Digital Logistics Simulator</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-state="menu">
+
+  <div id="app">
+    <canvas id="game-canvas" aria-label="EcoDash simulation viewport" role="img"></canvas>
+
+    <div id="overlay">
+      <!-- START -->
+      <section id="screen-start" class="panel">
+        <h1 class="logo">Eco<span>Dash</span></h1>
+        <p class="tagline">African Digital Logistics &amp; Infrastructure Simulator</p>
+        <p class="blurb">
+          Pilot a <strong>solar-powered delivery drone</strong> across the savanna.
+          Deliver medical supplies to rural clinics, dodge transmission pylons,
+          storms and wildlife — and keep your battery alive through load-shedding.
+        </p>
+        <div class="controls-grid">
+          <div class="ctrl"><kbd>W</kbd> / <kbd>↑</kbd> / <kbd>Space</kbd><span>Thrust up</span></div>
+          <div class="ctrl"><kbd>S</kbd> / <kbd>↓</kbd><span>Descend</span></div>
+          <div class="ctrl"><kbd>P</kbd> / <kbd>Esc</kbd><span>Pause</span></div>
+          <div class="ctrl"><kbd>M</kbd><span>Mute audio</span></div>
+        </div>
+        <button id="btn-start" class="btn btn-primary" type="button">▶ Start Mission</button>
+        <p class="hint">Press <kbd>Space</kbd> or <kbd>Enter</kbd> to begin</p>
+      </section>
+
+      <!-- PAUSE -->
+      <section id="screen-pause" class="panel hidden">
+        <h2 class="panel-title">Mission Paused</h2>
+        <p class="blurb">Recharge your thoughts. The savanna waits.</p>
+        <div class="btn-row">
+          <button id="btn-resume" class="btn btn-primary" type="button">▶ Resume</button>
+          <button id="btn-restart-pause" class="btn" type="button">↻ Restart</button>
+        </div>
+        <p class="hint">Press <kbd>P</kbd> or <kbd>Esc</kbd> to resume</p>
+      </section>
+
+      <!-- GAME OVER -->
+      <section id="screen-over" class="panel hidden">
+        <h2 class="panel-title danger">Mission Failed</h2>
+        <p id="over-reason" class="blurb"></p>
+        <div id="over-stats" class="stats-grid"></div>
+        <button id="btn-restart" class="btn btn-primary" type="button">↻ Fly Again</button>
+        <p class="hint">Press <kbd>R</kbd> or <kbd>Space</kbd> to restart</p>
+      </section>
+    </div>
+
+    <button id="btn-mute" class="icon-btn" type="button" aria-label="Toggle sound" title="Toggle sound (M)">
+      <span id="mute-icon">🔊</span>
+    </button>
+  </div>
+
+  <!-- 5 consolidated scripts — ORDER MATTERS -->
+  <script src="js/config.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

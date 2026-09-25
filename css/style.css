@@ -1,0 +1,193 @@
+/* ==========================================================================
+   EcoDash — style.css
+   Layout shell, DOM overlay menus and responsive behaviour.
+   All in-simulation HUD graphics are rendered on the HTML5 Canvas.
+   ========================================================================== */
+
+:root {
+  --ink:        #06111f;
+  --ink-2:      #0c1b2c;
+  --panel:      rgba(7, 19, 33, 0.90);
+  --panel-edge: rgba(242, 177, 52, 0.32);
+  --gold:       #f2b134;
+  --gold-soft:  #ffd166;
+  --green:      #2fa84f;
+  --green-soft: #66e08a;
+  --danger:     #ff5a4d;
+  --text:       #eaf2fb;
+  --muted:      #9fb3c8;
+  --radius:     16px;
+  --shadow:     0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0; height: 100%; overflow: hidden;
+  background: var(--ink); color: var(--text);
+  font-family: "Segoe UI", Inter, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app { position: fixed; inset: 0; overflow: hidden; }
+
+#game-canvas {
+  display: block; width: 100%; height: 100%;
+  touch-action: none; cursor: crosshair; background: #06111f;
+}
+
+#overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px; pointer-events: none; z-index: 10;
+}
+
+.panel {
+  pointer-events: auto;
+  width: min(560px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+  padding: 28px 30px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--panel-edge);
+  background: var(--panel);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: var(--shadow);
+  text-align: center;
+  animation: panelIn 0.32s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+.panel.hidden { display: none; }
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+.logo {
+  margin: 0 0 4px;
+  font-size: clamp(2.1rem, 7vw, 3.1rem);
+  font-weight: 800; letter-spacing: -1.5px;
+  color: var(--green-soft);
+  text-shadow: 0 0 26px rgba(102, 224, 138, 0.35);
+}
+.logo span { color: var(--gold); text-shadow: 0 0 26px rgba(242, 177, 52, 0.45); }
+
+.tagline {
+  margin: 0 0 16px; font-size: 0.82rem;
+  letter-spacing: 2.4px; text-transform: uppercase; color: var(--muted);
+}
+
+.panel-title {
+  margin: 0 0 8px; font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 700; letter-spacing: -0.5px;
+}
+.panel-title.danger { color: var(--danger); text-shadow: 0 0 22px rgba(255, 90, 77, 0.35); }
+
+.blurb {
+  margin: 0 0 18px; font-size: 0.94rem; line-height: 1.55; color: var(--muted);
+}
+.blurb strong { color: var(--gold-soft); font-weight: 600; }
+
+.hint { margin: 14px 0 0; font-size: 0.78rem; color: var(--muted); opacity: 0.85; }
+
+.controls-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px; margin: 0 0 20px;
+}
+
+.ctrl {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 10px 8px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.76rem; color: var(--muted);
+}
+
+kbd {
+  display: inline-block; min-width: 22px; padding: 2px 6px;
+  border-radius: 5px; background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.18); border-bottom-width: 2px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem; color: var(--text);
+}
+
+.btn {
+  pointer-events: auto; display: inline-block;
+  padding: 13px 28px; margin: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px; background: rgba(255, 255, 255, 0.07);
+  color: var(--text); font-family: inherit;
+  font-size: 0.98rem; font-weight: 600; letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: transform 0.14s ease, background 0.2s ease,
+              box-shadow 0.2s ease, border-color 0.2s;
+}
+.btn:hover  { transform: translateY(-2px); background: rgba(255, 255, 255, 0.12); }
+.btn:active { transform: translateY(0) scale(0.98); }
+.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--green) 0%, #1d7d3a 100%);
+  border-color: rgba(102, 224, 138, 0.45);
+  box-shadow: 0 10px 28px rgba(47, 168, 79, 0.35);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #37c05c 0%, #23903f 100%);
+  box-shadow: 0 14px 34px rgba(47, 168, 79, 0.5);
+}
+
+.btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px; margin: 0 0 20px;
+}
+
+.stat {
+  padding: 11px 8px; border-radius: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.stat .k {
+  display: block; font-size: 0.66rem; letter-spacing: 1.6px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+.stat .v {
+  display: block; font-size: 1.25rem; font-weight: 700;
+  color: var(--gold-soft); font-variant-numeric: tabular-nums;
+}
+.stat.best .v { color: var(--green-soft); }
+
+.icon-btn {
+  position: absolute; right: 14px; bottom: 14px; z-index: 20;
+  width: 44px; height: 44px; display: grid; place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(7, 19, 33, 0.75); color: var(--text);
+  font-size: 1.15rem; cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+.icon-btn:hover { transform: scale(1.08); background: rgba(7, 19, 33, 0.95); }
+.icon-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .panel { padding: 22px 18px 18px; }
+  .controls-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .btn { padding: 12px 20px; font-size: 0.9rem; }
+  .stat .v { font-size: 1.05rem; }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .panel { padding: 16px 22px; }
+  .blurb { margin-bottom: 10px; font-size: 0.84rem; }
+  .controls-grid { display: none; }
+  .logo { font-size: 1.9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel { animation: none; }
+  .btn, .icon-btn { transition: none; }
+}
